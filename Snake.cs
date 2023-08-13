@@ -8,6 +8,9 @@ public class Snake : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    Texture2D _texture;
+    SpriteFont GameFont;
+
 
     public Snake()
     {
@@ -26,7 +29,7 @@ public class Snake : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+        GameFont = Content.Load<SpriteFont>("Arial");
         // TODO: use this.Content to load your game content here
     }
 
@@ -42,7 +45,7 @@ public class Snake : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
 
         // TODO: Add your drawing code here
 

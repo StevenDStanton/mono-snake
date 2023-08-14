@@ -12,4 +12,8 @@
 
 
 #---------------------------------- Content ---------------------------------#
-
+/build:Letters/S.png;build=Texture2D
+/build:Letters/N.png;build=Texture2D
+/build:Letters/A.png;build=Texture2D
+/build:Letters/K.png;build=Texture2D
+/build:Letters/E.png;build=Texture2D

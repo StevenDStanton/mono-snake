@@ -1,54 +1,69 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using snake.Interfaces;
+using snake.Scenes;
 
-namespace snake;
-
-public class Snake : Game
+namespace snake
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    Texture2D _texture;
-    SpriteFont GameFont;
-
-
-    public Snake()
+    public class Snake : Game
     {
-        _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-    }
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private System.IServiceProvider _serviceProvider;
 
-    protected override void Initialize()
-    {
-        // TODO: Add your initialization logic here
+        // Using the abstract Scene class for polymorphism
+        public Scene currentScene;
 
-        base.Initialize();
-    }
+        public Snake()
+        {
+            _graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
 
-    protected override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        GameFont = Content.Load<SpriteFont>("Arial");
-        // TODO: use this.Content to load your game content here
-    }
+        protected override void Initialize()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(Content);
+            serviceCollection.AddSingleton<IAssetManager, AssetManager>();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
 
-    protected override void Update(GameTime gameTime)
-    {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+            // Initialize with StartMenu or any other scene
+            currentScene = new Scenes.StartMenu(this, _serviceProvider.GetService<IAssetManager>());
 
-        // TODO: Add your update logic here
+            base.Initialize();
+        }
 
-        base.Update(gameTime);
-    }
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-    protected override void Draw(GameTime gameTime)
-    {
-        GraphicsDevice.Clear(Color.Black);
+            // TODO: use this.Content to load your game content here
+        }
 
-        // TODO: Add your drawing code here
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
 
-        base.Draw(gameTime);
+            // Use polymorphism to update the current scene
+            currentScene?.Update(gameTime);
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+
+            // Use polymorphism to draw the current scene
+            currentScene?.Draw(gameTime);
+
+            // TODO: Add your drawing code here
+
+            base.Draw(gameTime);
+        }
     }
 }

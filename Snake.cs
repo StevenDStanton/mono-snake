@@ -12,26 +12,32 @@ namespace snake
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private System.IServiceProvider _serviceProvider;
-
+        private RenderTarget2D _renderTarget;
         // Using the abstract Scene class for polymorphism
         public Scene currentScene;
+        public float scale  = 0.44444f;
 
         public Snake()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
+
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton(Content);
             serviceCollection.AddSingleton<IAssetManager, AssetManager>();
             _serviceProvider = serviceCollection.BuildServiceProvider();
 
             // Initialize with StartMenu or any other scene
-            currentScene = new Scenes.StartMenu(this, _serviceProvider.GetService<IAssetManager>());
+
 
             base.Initialize();
         }
@@ -39,6 +45,8 @@ namespace snake
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _renderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
+            currentScene = new Scenes.StartMenu(_spriteBatch, _serviceProvider.GetService<IAssetManager>(), GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
@@ -56,13 +64,18 @@ namespace snake
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            
+            scale = 1F / (1080f / _graphics.GraphicsDevice.Viewport.Height);
+            GraphicsDevice.SetRenderTarget(_renderTarget);
+            GraphicsDevice.Clear(Color.Blue);
 
-            // Use polymorphism to draw the current scene
             currentScene?.Draw(gameTime);
 
-            // TODO: Add your drawing code here
-
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Blue);
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_renderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

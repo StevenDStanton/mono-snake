@@ -29,7 +29,8 @@ namespace snake.Interfaces
 
             foreach(char letter in "SNAKE")
             {
-                _letterTextures.Add(letter, _content.Load<Texture2D>(letter.ToString()));
+                _letterTextures.Add(letter, _content.Load<Texture2D>($"Letters/{letter}"));
+
             }
         }
 

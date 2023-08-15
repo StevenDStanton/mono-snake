@@ -10,6 +10,7 @@ namespace snake.Interfaces
     public interface IAssetManager
     {
         Texture2D GetLetterTexture(char letter);
+        Texture2D GetButton(string buttonName);
     }
 
     public class AssetManager : IAssetManager
@@ -32,11 +33,17 @@ namespace snake.Interfaces
                 _letterTextures.Add(letter, _content.Load<Texture2D>($"Letters/{letter}"));
 
             }
+
         }
 
         public Texture2D GetLetterTexture(char letter)
         {
             return _letterTextures.TryGetValue(letter, out var texture) ? texture : null;
+        }
+
+        public Texture2D GetButton(string buttonName)
+        {
+            return _content.Load<Texture2D>($"Buttons/{buttonName}");
         }
     }
 }

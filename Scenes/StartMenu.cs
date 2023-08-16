@@ -1,6 +1,7 @@
 using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using snake.Interfaces;
 
 namespace snake.Scenes
@@ -13,6 +14,8 @@ namespace snake.Scenes
         private Texture2D LetterK;
         private Texture2D LetterE;
         private Texture2D StartButton;
+        private MouseState currentMouseState;
+        private MouseState previousMouseState;
 
         public StartMenu(SpriteBatch _spriteBatch, IAssetManager _assetManager, GraphicsDevice _graphicsDevice)
             : base(_spriteBatch, _assetManager, _graphicsDevice)

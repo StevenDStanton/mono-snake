@@ -2,7 +2,9 @@ using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using snake.Interfaces;
+
 
 namespace snake.Scenes
 {
@@ -14,6 +16,7 @@ namespace snake.Scenes
         private Texture2D LetterK;
         private Texture2D LetterE;
         private Texture2D StartButton;
+        private Song startMenuMusic;
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
@@ -27,6 +30,10 @@ namespace snake.Scenes
             LetterK = _assetManager.GetLetterTexture('K');
             LetterE = _assetManager.GetLetterTexture('E');
             StartButton = _assetManager.GetButton("start");
+            startMenuMusic = _assetManager.GetSong("menu");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f; // 50% volume
+            MediaPlayer.Play(startMenuMusic);
 
         }
 

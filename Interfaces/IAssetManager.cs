@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace snake.Interfaces
 {
@@ -11,6 +12,7 @@ namespace snake.Interfaces
     {
         Texture2D GetLetterTexture(char letter);
         Texture2D GetButton(string buttonName);
+        Song GetSong(string songName);
     }
 
     public class AssetManager : IAssetManager
@@ -44,6 +46,11 @@ namespace snake.Interfaces
         public Texture2D GetButton(string buttonName)
         {
             return _content.Load<Texture2D>($"Buttons/{buttonName}");
+        }
+
+        public Song GetSong(string songName)
+        {
+            return _content.Load<Song>($"Music/{songName}");
         }
     }
 }

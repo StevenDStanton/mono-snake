@@ -59,6 +59,11 @@ namespace snake
             // Use polymorphism to update the current scene
             currentScene?.Update(gameTime);
 
+            if(currentScene is StartMenu startMenu && startMenu.StartButtonClicked)
+            {
+                currentScene = new Scenes.Level(_spriteBatch, _serviceProvider.GetService<IAssetManager>(), GraphicsDevice);
+            }
+
             base.Update(gameTime);
         }
 

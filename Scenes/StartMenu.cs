@@ -19,8 +19,13 @@ namespace snake.Scenes
         private Song startMenuMusic;
         private MouseState currentMouseState;
         private MouseState previousMouseState;
+        public bool StartButtonClicked { get; private set; } = false;
 
-        public StartMenu(SpriteBatch _spriteBatch, IAssetManager _assetManager, GraphicsDevice _graphicsDevice)
+        public StartMenu(
+            SpriteBatch _spriteBatch
+            , IAssetManager _assetManager
+            , GraphicsDevice _graphicsDevice
+        )
             : base(_spriteBatch, _assetManager, _graphicsDevice)
         {
 
@@ -39,14 +44,31 @@ namespace snake.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            // TODO: Implement the update logic for StartMenu
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            int screenWidth = _graphicsDevice.Viewport.Width;
+            int startButtonX = (screenWidth - StartButton.Width) / 2;
+            int buttonYPosition = 100 + LetterS.Height + 20;
+            
+            bool isMouseOverStartButton = currentMouseState.X >= startButtonX &&
+                                  currentMouseState.X <= startButtonX + StartButton.Width &&
+                                  currentMouseState.Y >= buttonYPosition &&
+                                  currentMouseState.Y <= buttonYPosition + StartButton.Height;
+            
+            if (isMouseOverStartButton && 
+                currentMouseState.LeftButton == ButtonState.Pressed && 
+                previousMouseState.LeftButton == ButtonState.Released)
+                {
+                    StartButtonClicked = true;
+                }
+
         }
 
         public override void Draw(GameTime gameTime)
         {
-            int screenWidth = _graphicsDevice.Viewport.Width; // Assuming you have access to GraphicsDevice
+            int screenWidth = _graphicsDevice.Viewport.Width; 
 
-            // Assuming all letters are of the same width.
             int letterWidth = LetterS.Width; // Using LetterS as reference, assuming all letters have the same width.
 
             int totalLettersWidth = 5 * letterWidth;  // Total width of the word "SNAKE"

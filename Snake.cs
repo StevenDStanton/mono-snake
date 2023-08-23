@@ -56,7 +56,6 @@ namespace snake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Use polymorphism to update the current scene
             currentScene?.Update(gameTime);
 
             if(currentScene is StartMenu startMenu && startMenu.StartButtonClicked)

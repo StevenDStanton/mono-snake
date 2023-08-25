@@ -13,24 +13,30 @@ namespace snake.Interfaces
         Texture2D GetLetterTexture(char letter);
         Texture2D GetButton(string buttonName);
         Song GetSong(string songName);
+        SpriteFont GetFont(string fontName);
+
     }
 
     public class AssetManager : IAssetManager
     {
         private readonly ContentManager _content;
         private Dictionary<char, Texture2D> _letterTextures;
-        
+
         public AssetManager(ContentManager content)
         {
             _content = content;
             LoadAssets();
+        }
+        public SpriteFont GetFont(string fontName)
+        {
+            return _content.Load<SpriteFont>($"{fontName}");
         }
 
         private void LoadAssets()
         {
             _letterTextures = new Dictionary<char, Texture2D>();
 
-            foreach(char letter in "SNAKE")
+            foreach (char letter in "SNAKE")
             {
                 _letterTextures.Add(letter, _content.Load<Texture2D>($"Letters/{letter}"));
 

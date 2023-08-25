@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using snake.Interfaces;
+using snake.FileManagement;
 
 
 namespace snake.Scenes
@@ -20,6 +21,9 @@ namespace snake.Scenes
         private MouseState currentMouseState;
         private MouseState previousMouseState;
         public bool StartButtonClicked { get; private set; } = false;
+        private ScoreManager scoreManager;
+        private const string ScoreFilePath = "HighScore.csv"; //
+        private SpriteFont scoreFont;
 
         public StartMenu(
             SpriteBatch _spriteBatch
@@ -39,6 +43,8 @@ namespace snake.Scenes
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.5f; // 50% volume
             MediaPlayer.Play(startMenuMusic);
+            scoreManager = new ScoreManager(ScoreFilePath);
+            scoreFont = _assetManager.GetFont("Arial");
 
         }
 
@@ -90,6 +96,19 @@ namespace snake.Scenes
             int startButtonX = (screenWidth - StartButton.Width) / 2;  // Centering the button
             _spriteBatch.Draw(StartButton, new Vector2(startButtonX, buttonYPosition), Color.White);
 
+            
+            int scoreListStartingY = buttonYPosition + StartButton.Height + 30; // 30 pixels below the Start button
+            var topScores = scoreManager.GetTopScores();
+           _spriteBatch.DrawString(scoreFont, "High Scores", new Vector2(startingX, scoreListStartingY), Color.White);
+
+            for (int i = 0; i < topScores.Count; i++)
+            {
+                var scoreEntry = topScores[i];
+                string scoreText = $"{scoreEntry.Item1}: {scoreEntry.Item2}"; // Format: INITIALS: SCORE
+                // Assuming you have a SpriteFont loaded to draw the text
+                _spriteBatch.DrawString(scoreFont, scoreText, new Vector2(startingX, scoreListStartingY + i * 25), Color.White); // 25 pixels gap between scores
+            }
+            
             _spriteBatch.End();
         }
 

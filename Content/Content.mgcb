@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:Buttons/start.png;Buttons/start.xnb
 
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:File.spritefont;Arial.spritefont
+
 #begin Letters/A.png
 /importer:TextureImporter
 /processor:TextureProcessor
